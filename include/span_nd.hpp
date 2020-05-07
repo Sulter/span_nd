@@ -49,7 +49,7 @@ public:
     if(slice >= dim.back())
       throw std::out_of_range("Taking slice outside range of highest dim");
 
-    std::array<size_type, Dims - 1> newDim;
+    std::array<size_type, Dims - 1> newDim{};
     std::copy(dim.begin(), dim.begin() + newDim.size(), newDim.begin());
 
     size_type newLen = std::accumulate(newDim.begin(), newDim.end(), 1, std::multiplies<size_type>());
@@ -75,12 +75,11 @@ public:
     if(index > length)
       throw std::out_of_range("Indexing higher than size of span");
 
-    /* or possibly, as a policy?
+    // or possibly, as a policy?
     if(std::mismatch(arr.begin(), arr.end(), dim.begin(), std::less<>{}).first != arr.end())
     {
-      throw std::out_of_range("Index x higher than [...]");
+      throw std::out_of_range("One of the indexes is higher than one of the dimensions");
     }
-    */
 
     return *(ptr + index);
   }
@@ -122,7 +121,10 @@ public:
   {
     return ptr;
   }
-  constexpr const_iterator begin()  const noexcept;
+  constexpr const_iterator begin()  const noexcept
+  {
+    return ptr;
+  }
   constexpr const_iterator cbegin() const noexcept;
 
   constexpr reverse_iterator rbegin() noexcept;
@@ -133,7 +135,10 @@ public:
   {
     return (ptr + length);
   }
-  constexpr const_iterator end() const noexcept;
+  constexpr const_iterator end() const noexcept
+  {
+    return (ptr + length);
+  }
   constexpr const_iterator cend() const noexcept;
 
   constexpr reverse_iterator rend() noexcept;
