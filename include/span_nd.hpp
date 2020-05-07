@@ -156,6 +156,11 @@ public:
     return length == 0;
   }
 
+  constexpr std::array<size_type, Dims> dimensions()
+  {
+    return dim;
+  }
+
 private:
   pointer   ptr                  = nullptr; // pointer to data
   size_type length               = 0;       // number of elements in the span
