@@ -161,7 +161,7 @@ public:
     return length == 0;
   }
 
-  constexpr std::array<size_type, Dims> dimensions()
+  constexpr std::array<size_type, Dims> dimensions() const noexcept
   {
     return dim;
   }
