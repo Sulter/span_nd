@@ -38,8 +38,6 @@ public:
       throw std::invalid_argument("size not big enough for required width and height");
   }
   constexpr span_nd(const span_nd& rhs) noexcept = default;
-
-  /* TODO: ctors need to be expanded for things like construction from iterator pairs */
   constexpr span_nd& operator=(const span_nd& rhs) noexcept = default;
 
   // subviews
@@ -86,23 +84,7 @@ public:
 
   constexpr const_reference operator[](const std::array<size_type, Dims>& arr) const
   {
-    size_type index = arr[0];
-    for(size_type i = 0; i < Dims - 1; i++)
-    {
-      index += arr[i + 1] * std::accumulate(dim.begin(), dim.begin() + i + 1, 1, std::multiplies<size_type>());
-    }
-
-    //possible sanity check, maybe if !NDEBUG, like most std::span implementations?
-    if(index > length)
-      throw std::out_of_range("Indexing higher than size of span");
-
-    // or possibly, as a policy?
-    if(std::mismatch(arr.begin(), arr.end(), dim.begin(), std::less<>{}).first != arr.end())
-    {
-      throw std::out_of_range("One of the indexes is higher than one of the dimensions");
-    }
-
-    return *(ptr + index);
+    return *const_cast<span_nd*>(this)[arr];
   }
 
   constexpr pointer data() noexcept
